@@ -36,10 +36,7 @@ export const projects = [
     stack: 'WordPress · PHP · Custom Theme',
     year: '2026',
     client: 'Bona Magazine',
-    liveLinks: [
-      { label: 'Staging', url: 'https://staging.bona.co.za/' },
-      { label: 'Current site', url: 'https://www.bona.co.za/' },
-    ],
+    liveUrl: 'https://www.bona.co.za/',
     tags: ['WordPress', 'Custom Theme', 'PHP'],
     problem:
       'Bona Magazine needed a fully custom WordPress theme built to match an existing Figma design exactly — no page builder shortcuts, no off-the-shelf theme stretched to fit.',
