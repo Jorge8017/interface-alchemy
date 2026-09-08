@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Interface Alchemy">
+  <!-- Fallback: same light mark as dark-chrome favicon -->
+  <rect width="32" height="32" rx="8" fill="#F6F5F2"/>
+  <circle cx="10" cy="16" r="2.5" fill="#37473A"/>
+  <circle cx="16" cy="16" r="2.5" fill="#37473A"/>
+  <circle cx="22" cy="16" r="2.5" fill="#37473A"/>
+</svg>
