@@ -1,9 +1,6 @@
 /**
- * One-off portfolio screenshot utility.
- * Run: node scripts/capture-portfolio-screenshots.mjs
- *
- * Explores two client builds and saves full-page captures at 1440px.
- * Page choices are documented in CAPTURE_MANIFEST below.
+ * Portfolio screenshot utility.
+ * Run: node scripts/capture-portfolio-screenshots.mjs [bona|compleat|filter]
  */
 
 import { chromium } from 'playwright'
@@ -13,52 +10,120 @@ import { fileURLToPath } from 'node:url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.join(__dirname, '..')
-const VIEWPORT = { width: 1440, height: 900 }
 
-/** @type {Array<{ site: string, outputDir: string, captures: Array<{ file: string, url: string, reason: string, setup?: (page: import('playwright').Page) => Promise<void> }> }>} */
+const DEVICES = {
+  desktop: { width: 1440, height: 900 },
+  mobile: { width: 390, height: 844, hasTouch: true, isMobile: true },
+}
+
+const BONA_ARTICLE =
+  'https://staging.bona.co.za/2026-comrades-marathon-everything-you-need-to-know/'
+
+async function dismissNoise(page) {
+  const selectors = [
+    'button:has-text("Accept")',
+    'button:has-text("Agree")',
+    'button:has-text("Got it")',
+    '#onetrust-accept-btn-handler',
+  ]
+
+  for (const selector of selectors) {
+    try {
+      const el = page.locator(selector).first()
+      if (await el.isVisible({ timeout: 400 })) {
+        await el.click({ timeout: 800 })
+        await page.waitForTimeout(200)
+      }
+    } catch {
+      // ignore
+    }
+  }
+
+  await page.evaluate(() => {
+    document
+      .querySelectorAll(
+        'iframe, .ad-banner, .ad-banner__link, .ad-banner__img, .adsbygoogle, [id*="google_ads" i], [id*="div-gpt" i], .gpt-ad, .ad-slot, .adunit',
+      )
+      .forEach((node) => {
+        node.style.setProperty('display', 'none', 'important')
+        node.style.setProperty('height', '0', 'important')
+        node.style.setProperty('overflow', 'hidden', 'important')
+      })
+
+    const header = document.querySelector('.site-header--ad, #top.site-header')
+    if (header) {
+      header.classList.remove('site-header--ad')
+      header.style.setProperty('padding-top', '0', 'important')
+    }
+  })
+}
+
+async function settlePage(page) {
+  await page.waitForLoadState('networkidle', { timeout: 90000 }).catch(() => {})
+  await page.waitForTimeout(500)
+  await page.evaluate(async () => {
+    if (document.fonts?.ready) await document.fonts.ready
+  })
+  await page.evaluate(() => window.scrollTo(0, 0))
+  await page.waitForTimeout(250)
+}
+
+async function openBonaStory(page, slug = 'news') {
+  await page.locator(`button.cat-pill[data-story-slug="${slug}"]`).first().click()
+  await page.waitForSelector('.story-viewer[aria-hidden="false"], .story-viewer:not([hidden])', {
+    timeout: 8000,
+  })
+  await page.waitForTimeout(900)
+  // Ensure viewer is visibly open
+  await page.waitForFunction(() => {
+    const viewer = document.querySelector('.story-viewer')
+    return viewer && getComputedStyle(viewer).display !== 'none'
+  })
+  await page.waitForTimeout(500)
+}
+
+async function openBonaStoryDrawer(page) {
+  await openBonaStory(page, 'news')
+
+  // Skip subscribe-only slides if the first frame is the newsletter card
+  for (let i = 0; i < 3; i += 1) {
+    const isSubscribe = await page.evaluate(() => {
+      const slide = document.querySelector('.story-viewer__slide')
+      return Boolean(slide?.querySelector('.story-viewer__subscribe'))
+    })
+    if (!isSubscribe) break
+    await page.locator('.story-viewer__tap--next').click({ force: true }).catch(() => {})
+    await page.waitForTimeout(450)
+  }
+
+  const swipeUp = page.locator('.story-viewer__swipe-up')
+  await swipeUp.waitFor({ state: 'attached', timeout: 5000 })
+  await swipeUp.click({ force: true })
+
+  await page.waitForSelector('.story-viewer.is-drawer-open, .story-viewer__drawer.is-open', {
+    timeout: 8000,
+  })
+
+  // Wait until article HTML has replaced the loading state
+  await page.waitForFunction(() => {
+    const article = document.querySelector('[data-drawer-article], .story-viewer__drawer-article')
+    const status = document.querySelector('[data-drawer-status], .story-viewer__drawer-status')
+    const text = (article?.textContent || '').trim()
+    const statusText = (status?.textContent || '').trim().toLowerCase()
+    return text.length > 80 && !statusText.includes('loading')
+  }, { timeout: 15000 })
+
+  await page.waitForTimeout(700)
+}
+
+async function openBonaMobileMenu(page) {
+  await page.locator('button.nav-hamburger').click()
+  await page.waitForFunction(() => document.body.classList.contains('is-nav-menu-open'))
+  await page.waitForTimeout(500)
+}
+
+/** @type {Array<{ site: string, outputDir: string, captures: Array<any> }>} */
 const CAPTURE_MANIFEST = [
-  {
-    site: 'Compleat Golfer Tours',
-    outputDir: path.join(ROOT, 'src/assets/projects/compleat-golfer-tours'),
-    captures: [
-      {
-        file: 'cover-packages-listing.png',
-        url: 'https://compleatgolfertours.com/packages/',
-        reason:
-          'Cover — the packages index is the core commerce surface: browseable tour inventory, filters, and the main conversion path. Sells the rebuild better than a marketing homepage alone.',
-      },
-      {
-        file: 'homepage.png',
-        url: 'https://compleatgolfertours.com/',
-        reason:
-          'Homepage hero, featured packages, and destination entry points — shows brand shell and how users land before browsing.',
-      },
-      {
-        file: 'package-detail.png',
-        url: 'https://compleatgolfertours.com/packages/nedbank-golf-challenge-2026-hospitality/',
-        reason:
-          'Single-package template with itinerary detail, pricing cues, and enquiry CTA — the custom template built for international golf packages.',
-      },
-      {
-        file: 'destinations-browse.png',
-        url: 'https://compleatgolfertours.com/destinations/',
-        reason:
-          'Destinations index with regional grid — shows how users browse by geography; complements the package commerce flow (flyout nav is hover-only and did not capture reliably in headless mode).',
-      },
-      {
-        file: 'beachcomber-mauritius.png',
-        url: 'https://compleatgolfertours.com/beachcomber-specials/',
-        reason:
-          'Mauritius Beachcomber destination specials page — called out in the project brief as a dedicated destination landing.',
-      },
-      {
-        file: 'journal-listing.png',
-        url: 'https://compleatgolfertours.com/journal/',
-        reason:
-          'Journal/archive layout — distinct editorial template separate from package commerce, showing layout range.',
-      },
-    ],
-  },
   {
     site: 'Bona Magazine',
     outputDir: path.join(ROOT, 'src/assets/projects/bona-magazine'),
@@ -66,46 +131,141 @@ const CAPTURE_MANIFEST = [
       {
         file: 'cover-homepage.png',
         url: 'https://staging.bona.co.za/',
-        reason:
-          'Cover — custom front-page.php homepage with curated editorial modules, category rails, and the magazine’s primary reading experience.',
-      },
-      {
-        file: 'category-lifestyle.png',
-        url: 'https://staging.bona.co.za/category/lifestyle/',
-        reason:
-          'Lifestyle category archive — shows how the theme handles section landing pages and article grids.',
-      },
-      {
-        file: 'category-sports.png',
-        url: 'https://staging.bona.co.za/category/sports/',
-        reason:
-          'Sports category — second archive layout with different editorial mix, proving the template scales across verticals.',
+        device: 'desktop',
+        reason: 'Desktop homepage — cover.',
       },
       {
         file: 'article-single.png',
-        url: 'https://staging.bona.co.za/2026-comrades-marathon-everything-you-need-to-know/',
-        reason:
-          'Single-article template with byline, body typography, and related content — the core reading experience editors publish into daily.',
+        url: BONA_ARTICLE,
+        device: 'desktop',
+        reason: 'Desktop single-article view.',
       },
       {
-        file: 'article-entertainment.png',
-        url: 'https://staging.bona.co.za/pearl-modiadie-bids-farewell-to-her-law-love-betrayal-character/',
-        reason:
-          'Entertainment long-read — alternate article layout/content density for gallery variety on the case study page.',
+        file: 'desktop-story.png',
+        url: 'https://staging.bona.co.za/',
+        device: 'desktop',
+        reason: 'Desktop story viewer opened from category pill.',
+        setup: async (page) => openBonaStory(page, 'entertainment'),
+      },
+      {
+        file: 'mobile-homepage.png',
+        url: 'https://staging.bona.co.za/',
+        device: 'mobile',
+        reason: 'Mobile homepage.',
+      },
+      {
+        file: 'mobile-menu.png',
+        url: 'https://staging.bona.co.za/',
+        device: 'mobile',
+        reason: 'Mobile hamburger nav open.',
+        setup: openBonaMobileMenu,
+      },
+      {
+        file: 'mobile-story.png',
+        url: 'https://staging.bona.co.za/',
+        device: 'mobile',
+        reason: 'Mobile Instagram-style story viewer.',
+        setup: async (page) => openBonaStory(page, 'news'),
+      },
+      {
+        file: 'mobile-article-drawer.png',
+        url: 'https://staging.bona.co.za/',
+        device: 'mobile',
+        reason: 'Article drawer opened from story (swipe-up to read).',
+        setup: openBonaStoryDrawer,
+      },
+      {
+        file: 'mobile-article.png',
+        url: BONA_ARTICLE,
+        device: 'mobile',
+        reason: 'Mobile single-article page.',
+      },
+    ],
+  },
+  {
+    site: 'Compleat Golfer Tours',
+    outputDir: path.join(ROOT, 'src/assets/projects/compleat-golfer-tours'),
+    captures: [
+      {
+        file: 'cover-packages-listing.png',
+        url: 'https://compleatgolfertours.com/packages/',
+        device: 'desktop',
+        reason: 'Cover — packages listing (desktop).',
+      },
+      {
+        file: 'homepage.png',
+        url: 'https://compleatgolfertours.com/',
+        device: 'desktop',
+        reason: 'Homepage (desktop).',
+      },
+      {
+        file: 'package-detail.png',
+        url: 'https://compleatgolfertours.com/packages/nedbank-golf-challenge-2026-hospitality/',
+        device: 'desktop',
+        reason: 'Package detail (desktop).',
+      },
+      {
+        file: 'destinations-browse.png',
+        url: 'https://compleatgolfertours.com/destinations/',
+        device: 'desktop',
+        reason: 'Destinations index (desktop).',
+      },
+      {
+        file: 'beachcomber-mauritius.png',
+        url: 'https://compleatgolfertours.com/beachcomber-specials/',
+        device: 'desktop',
+        reason: 'Beachcomber specials (desktop).',
+      },
+      {
+        file: 'mobile-homepage.png',
+        url: 'https://compleatgolfertours.com/',
+        device: 'mobile',
+        reason: 'Homepage (mobile).',
+      },
+      {
+        file: 'mobile-packages.png',
+        url: 'https://compleatgolfertours.com/packages/',
+        device: 'mobile',
+        reason: 'Packages listing (mobile).',
+      },
+      {
+        file: 'mobile-package-detail.png',
+        url: 'https://compleatgolfertours.com/packages/nedbank-golf-challenge-2026-hospitality/',
+        device: 'mobile',
+        reason: 'Package detail (mobile).',
+      },
+      {
+        file: 'mobile-destinations.png',
+        url: 'https://compleatgolfertours.com/destinations/',
+        device: 'mobile',
+        reason: 'Destinations (mobile).',
       },
     ],
   },
 ]
 
-async function capturePage(page, { file, url, setup }) {
-  await page.goto(url, { waitUntil: 'networkidle', timeout: 90000 })
-  await page.waitForTimeout(500)
+async function capturePage(browser, capture) {
+  const device = DEVICES[capture.device || 'desktop']
+  const context = await browser.newContext({
+    viewport: { width: device.width, height: device.height },
+    deviceScaleFactor: 2,
+    colorScheme: 'light',
+    hasTouch: Boolean(device.hasTouch),
+    isMobile: Boolean(device.isMobile),
+  })
+  const page = await context.newPage()
 
-  if (setup) {
-    await setup(page)
+  await page.goto(capture.url, { waitUntil: 'domcontentloaded', timeout: 90000 })
+  await settlePage(page)
+  await dismissNoise(page)
+  await settlePage(page)
+
+  if (capture.setup) {
+    await capture.setup(page)
+    await page.waitForTimeout(400)
   }
 
-  return file
+  return { page, context }
 }
 
 async function main() {
@@ -120,9 +280,6 @@ async function main() {
   }
 
   const browser = await chromium.launch()
-  const context = await browser.newContext({ viewport: VIEWPORT })
-  const page = await context.newPage()
-
   const results = []
 
   for (const group of groups) {
@@ -131,14 +288,23 @@ async function main() {
 
     for (const capture of group.captures) {
       const outPath = path.join(group.outputDir, capture.file)
+      let page
+      let context
       try {
-        await capturePage(page, capture)
-        await page.screenshot({ path: outPath, fullPage: true })
-        console.log(`  ✓ ${capture.file}`)
+        ;({ page, context } = await capturePage(browser, capture))
+        await page.screenshot({
+          path: outPath,
+          fullPage: Boolean(capture.fullPage),
+          type: 'png',
+        })
+        console.log(`  ✓ ${capture.file} (${capture.device || 'desktop'})`)
         results.push({ ...capture, site: group.site, path: outPath, ok: true })
       } catch (err) {
         console.error(`  ✗ ${capture.file}: ${err.message}`)
         results.push({ ...capture, site: group.site, ok: false, error: err.message })
+      } finally {
+        if (page) await page.close().catch(() => {})
+        if (context) await context.close().catch(() => {})
       }
     }
   }

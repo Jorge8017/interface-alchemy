@@ -19,13 +19,19 @@ import cgtHomepage from '../assets/projects/compleat-golfer-tours/homepage.png'
 import cgtPackageDetail from '../assets/projects/compleat-golfer-tours/package-detail.png'
 import cgtDestinations from '../assets/projects/compleat-golfer-tours/destinations-browse.png'
 import cgtBeachcomber from '../assets/projects/compleat-golfer-tours/beachcomber-mauritius.png'
-import cgtJournal from '../assets/projects/compleat-golfer-tours/journal-listing.png'
+import cgtMobileHome from '../assets/projects/compleat-golfer-tours/mobile-homepage.png'
+import cgtMobilePackages from '../assets/projects/compleat-golfer-tours/mobile-packages.png'
+import cgtMobilePackageDetail from '../assets/projects/compleat-golfer-tours/mobile-package-detail.png'
+import cgtMobileDestinations from '../assets/projects/compleat-golfer-tours/mobile-destinations.png'
 
 import bonaCover from '../assets/projects/bona-magazine/cover-homepage.png'
-import bonaLifestyle from '../assets/projects/bona-magazine/category-lifestyle.png'
-import bonaSports from '../assets/projects/bona-magazine/category-sports.png'
 import bonaArticleSingle from '../assets/projects/bona-magazine/article-single.png'
-import bonaArticleEntertainment from '../assets/projects/bona-magazine/article-entertainment.png'
+import bonaDesktopStory from '../assets/projects/bona-magazine/desktop-story.png'
+import bonaMobileHome from '../assets/projects/bona-magazine/mobile-homepage.png'
+import bonaMobileMenu from '../assets/projects/bona-magazine/mobile-menu.png'
+import bonaMobileStory from '../assets/projects/bona-magazine/mobile-story.png'
+import bonaMobileDrawer from '../assets/projects/bona-magazine/mobile-article-drawer.png'
+import bonaMobileArticle from '../assets/projects/bona-magazine/mobile-article.png'
 
 export const projects = [
   // ---------- WordPress builds ----------
@@ -36,7 +42,10 @@ export const projects = [
     stack: 'WordPress · PHP · Custom Theme',
     year: '2026',
     client: 'Bona Magazine',
-    liveUrl: 'https://www.bona.co.za/',
+    liveLinks: [
+      { label: 'Staging', url: 'https://staging.bona.co.za/' },
+      { label: 'Live site', url: 'https://www.bona.co.za/' },
+    ],
     tags: ['WordPress', 'Custom Theme', 'PHP'],
     problem:
       'Bona Magazine needed a fully custom WordPress theme built to match an existing Figma design exactly — no page builder shortcuts, no off-the-shelf theme stretched to fit.',
@@ -46,7 +55,15 @@ export const projects = [
     coverPosition: 'top center',
     image: bonaCover,
     tileImage: bonaCover,
-    gallery: [bonaLifestyle, bonaSports, bonaArticleSingle, bonaArticleEntertainment],
+    gallery: [
+      bonaArticleSingle,
+      bonaDesktopStory,
+      bonaMobileHome,
+      bonaMobileMenu,
+      bonaMobileStory,
+      bonaMobileDrawer,
+      bonaMobileArticle,
+    ],
     published: true,
   },
   {
@@ -66,7 +83,16 @@ export const projects = [
     coverPosition: 'top center',
     image: cgtCover,
     tileImage: cgtCover,
-    gallery: [cgtHomepage, cgtPackageDetail, cgtDestinations, cgtBeachcomber, cgtJournal],
+    gallery: [
+      cgtHomepage,
+      cgtPackageDetail,
+      cgtDestinations,
+      cgtBeachcomber,
+      cgtMobileHome,
+      cgtMobilePackages,
+      cgtMobilePackageDetail,
+      cgtMobileDestinations,
+    ],
     published: true,
   },
 

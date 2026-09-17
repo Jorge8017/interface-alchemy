@@ -460,7 +460,7 @@ button:focus-visible {
   }
 
   .next-project .next-title {
-    font-size: clamp(1.6rem, 8vw, 2.5rem);
+    font-size: clamp(1.2rem, 5.5vw, 1.75rem);
     overflow-wrap: anywhere;
   }
 }
@@ -1669,7 +1669,8 @@ button.case-image {
     calc(clamp(1.5rem, 4vw, 3rem) + var(--safe-left));
   background: color-mix(in srgb, var(--ink) 92%, transparent);
   animation: lightbox-fade 0.2s ease;
-  touch-action: pan-y;
+  touch-action: none;
+  overscroll-behavior: none;
 }
 
 .lightbox-close {
@@ -1696,6 +1697,39 @@ button.case-image {
   border-color: var(--bg);
 }
 
+.lightbox-zoom-controls {
+  position: absolute;
+  top: calc(clamp(1rem, 3vw, 1.75rem) + var(--safe-top));
+  left: 50%;
+  z-index: 2;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem;
+  border: 1px solid rgba(246, 245, 242, 0.28);
+  border-radius: 999px;
+  background: rgba(20, 20, 15, 0.45);
+  backdrop-filter: blur(10px);
+}
+
+.lightbox-zoom-controls button {
+  min-width: 2.5rem;
+  min-height: 2.5rem;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--bg);
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.lightbox-zoom-controls button:hover {
+  background: rgba(246, 245, 242, 0.1);
+}
+
 .lightbox-figure {
   position: relative;
   max-width: min(1200px, 92vw);
@@ -1706,13 +1740,41 @@ button.case-image {
   gap: 0.85rem;
 }
 
+.lightbox-stage {
+  overflow: hidden;
+  max-width: 100%;
+  max-height: calc(88vh - 2.5rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  cursor: zoom-in;
+  touch-action: none;
+}
+
+.lightbox-stage.is-zoomed {
+  cursor: grab;
+}
+
+.lightbox-stage.is-zoomed:active {
+  cursor: grabbing;
+}
+
 .lightbox-figure img {
   display: block;
-  max-width: 100%;
-  max-height: calc(88vh - 2rem);
+  max-width: min(1200px, 92vw);
+  max-height: calc(88vh - 2.5rem);
   width: auto;
   height: auto;
   object-fit: contain;
+  transform-origin: center center;
+  transition: transform 0.12s ease-out;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.lightbox.is-zoomed .lightbox-figure img {
+  transition: none;
 }
 
 .lightbox-count {
@@ -1720,6 +1782,12 @@ button.case-image {
   font-size: 0.72rem;
   letter-spacing: 0.06em;
   color: rgba(246, 245, 242, 0.55);
+}
+
+.lightbox-hint {
+  text-transform: none;
+  letter-spacing: 0.02em;
+  opacity: 0.75;
 }
 
 .lightbox-nav {
@@ -1808,7 +1876,7 @@ button.case-image {
 
 .next-project .next-title {
   font-family: var(--display);
-  font-size: clamp(2rem, 6vw, 4rem);
+  font-size: clamp(1.35rem, 3.5vw, 2.25rem);
   font-weight: 600;
   letter-spacing: -0.02em;
 }

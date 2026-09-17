@@ -1,8 +1,81 @@
 [
   {
+    "file": "cover-homepage.png",
+    "url": "https://staging.bona.co.za/",
+    "device": "desktop",
+    "reason": "Desktop homepage — cover.",
+    "site": "Bona Magazine",
+    "path": "C:\\Users\\Jordan.Shears\\Documents\\My personal Projects\\interface-alchemy\\src\\assets\\projects\\bona-magazine\\cover-homepage.png",
+    "ok": true
+  },
+  {
+    "file": "article-single.png",
+    "url": "https://staging.bona.co.za/2026-comrades-marathon-everything-you-need-to-know/",
+    "device": "desktop",
+    "reason": "Desktop single-article view.",
+    "site": "Bona Magazine",
+    "path": "C:\\Users\\Jordan.Shears\\Documents\\My personal Projects\\interface-alchemy\\src\\assets\\projects\\bona-magazine\\article-single.png",
+    "ok": true
+  },
+  {
+    "file": "desktop-story.png",
+    "url": "https://staging.bona.co.za/",
+    "device": "desktop",
+    "reason": "Desktop story viewer opened from category pill.",
+    "site": "Bona Magazine",
+    "path": "C:\\Users\\Jordan.Shears\\Documents\\My personal Projects\\interface-alchemy\\src\\assets\\projects\\bona-magazine\\desktop-story.png",
+    "ok": true
+  },
+  {
+    "file": "mobile-homepage.png",
+    "url": "https://staging.bona.co.za/",
+    "device": "mobile",
+    "reason": "Mobile homepage.",
+    "site": "Bona Magazine",
+    "path": "C:\\Users\\Jordan.Shears\\Documents\\My personal Projects\\interface-alchemy\\src\\assets\\projects\\bona-magazine\\mobile-homepage.png",
+    "ok": true
+  },
+  {
+    "file": "mobile-menu.png",
+    "url": "https://staging.bona.co.za/",
+    "device": "mobile",
+    "reason": "Mobile hamburger nav open.",
+    "site": "Bona Magazine",
+    "path": "C:\\Users\\Jordan.Shears\\Documents\\My personal Projects\\interface-alchemy\\src\\assets\\projects\\bona-magazine\\mobile-menu.png",
+    "ok": true
+  },
+  {
+    "file": "mobile-story.png",
+    "url": "https://staging.bona.co.za/",
+    "device": "mobile",
+    "reason": "Mobile Instagram-style story viewer.",
+    "site": "Bona Magazine",
+    "path": "C:\\Users\\Jordan.Shears\\Documents\\My personal Projects\\interface-alchemy\\src\\assets\\projects\\bona-magazine\\mobile-story.png",
+    "ok": true
+  },
+  {
+    "file": "mobile-article-drawer.png",
+    "url": "https://staging.bona.co.za/",
+    "device": "mobile",
+    "reason": "Article drawer opened from story (swipe-up to read).",
+    "site": "Bona Magazine",
+    "path": "C:\\Users\\Jordan.Shears\\Documents\\My personal Projects\\interface-alchemy\\src\\assets\\projects\\bona-magazine\\mobile-article-drawer.png",
+    "ok": true
+  },
+  {
+    "file": "mobile-article.png",
+    "url": "https://staging.bona.co.za/2026-comrades-marathon-everything-you-need-to-know/",
+    "device": "mobile",
+    "reason": "Mobile single-article page.",
+    "site": "Bona Magazine",
+    "path": "C:\\Users\\Jordan.Shears\\Documents\\My personal Projects\\interface-alchemy\\src\\assets\\projects\\bona-magazine\\mobile-article.png",
+    "ok": true
+  },
+  {
     "file": "cover-packages-listing.png",
     "url": "https://compleatgolfertours.com/packages/",
-    "reason": "Cover — the packages index is the core commerce surface: browseable tour inventory, filters, and the main conversion path. Sells the rebuild better than a marketing homepage alone.",
+    "device": "desktop",
+    "reason": "Cover — packages listing (desktop).",
     "site": "Compleat Golfer Tours",
     "path": "C:\\Users\\Jordan.Shears\\Documents\\My personal Projects\\interface-alchemy\\src\\assets\\projects\\compleat-golfer-tours\\cover-packages-listing.png",
     "ok": true
@@ -10,7 +83,8 @@
   {
     "file": "homepage.png",
     "url": "https://compleatgolfertours.com/",
-    "reason": "Homepage hero, featured packages, and destination entry points — shows brand shell and how users land before browsing.",
+    "device": "desktop",
+    "reason": "Homepage (desktop).",
     "site": "Compleat Golfer Tours",
     "path": "C:\\Users\\Jordan.Shears\\Documents\\My personal Projects\\interface-alchemy\\src\\assets\\projects\\compleat-golfer-tours\\homepage.png",
     "ok": true
@@ -18,7 +92,8 @@
   {
     "file": "package-detail.png",
     "url": "https://compleatgolfertours.com/packages/nedbank-golf-challenge-2026-hospitality/",
-    "reason": "Single-package template with itinerary detail, pricing cues, and enquiry CTA — the custom template built for international golf packages.",
+    "device": "desktop",
+    "reason": "Package detail (desktop).",
     "site": "Compleat Golfer Tours",
     "path": "C:\\Users\\Jordan.Shears\\Documents\\My personal Projects\\interface-alchemy\\src\\assets\\projects\\compleat-golfer-tours\\package-detail.png",
     "ok": true
@@ -26,7 +101,8 @@
   {
     "file": "destinations-browse.png",
     "url": "https://compleatgolfertours.com/destinations/",
-    "reason": "Destinations index with regional grid — shows how users browse by geography; complements the package commerce flow (flyout nav is hover-only and did not capture reliably in headless mode).",
+    "device": "desktop",
+    "reason": "Destinations index (desktop).",
     "site": "Compleat Golfer Tours",
     "path": "C:\\Users\\Jordan.Shears\\Documents\\My personal Projects\\interface-alchemy\\src\\assets\\projects\\compleat-golfer-tours\\destinations-browse.png",
     "ok": true
@@ -34,57 +110,46 @@
   {
     "file": "beachcomber-mauritius.png",
     "url": "https://compleatgolfertours.com/beachcomber-specials/",
-    "reason": "Mauritius Beachcomber destination specials page — called out in the project brief as a dedicated destination landing.",
+    "device": "desktop",
+    "reason": "Beachcomber specials (desktop).",
     "site": "Compleat Golfer Tours",
     "path": "C:\\Users\\Jordan.Shears\\Documents\\My personal Projects\\interface-alchemy\\src\\assets\\projects\\compleat-golfer-tours\\beachcomber-mauritius.png",
     "ok": true
   },
   {
-    "file": "journal-listing.png",
-    "url": "https://compleatgolfertours.com/journal/",
-    "reason": "Journal/archive layout — distinct editorial template separate from package commerce, showing layout range.",
+    "file": "mobile-homepage.png",
+    "url": "https://compleatgolfertours.com/",
+    "device": "mobile",
+    "reason": "Homepage (mobile).",
     "site": "Compleat Golfer Tours",
-    "path": "C:\\Users\\Jordan.Shears\\Documents\\My personal Projects\\interface-alchemy\\src\\assets\\projects\\compleat-golfer-tours\\journal-listing.png",
+    "path": "C:\\Users\\Jordan.Shears\\Documents\\My personal Projects\\interface-alchemy\\src\\assets\\projects\\compleat-golfer-tours\\mobile-homepage.png",
     "ok": true
   },
   {
-    "file": "cover-homepage.png",
-    "url": "https://staging.bona.co.za/",
-    "reason": "Cover — custom front-page.php homepage with curated editorial modules, category rails, and the magazine’s primary reading experience.",
-    "site": "Bona Magazine",
-    "path": "C:\\Users\\Jordan.Shears\\Documents\\My personal Projects\\interface-alchemy\\src\\assets\\projects\\bona-magazine\\cover-homepage.png",
+    "file": "mobile-packages.png",
+    "url": "https://compleatgolfertours.com/packages/",
+    "device": "mobile",
+    "reason": "Packages listing (mobile).",
+    "site": "Compleat Golfer Tours",
+    "path": "C:\\Users\\Jordan.Shears\\Documents\\My personal Projects\\interface-alchemy\\src\\assets\\projects\\compleat-golfer-tours\\mobile-packages.png",
     "ok": true
   },
   {
-    "file": "category-lifestyle.png",
-    "url": "https://staging.bona.co.za/category/lifestyle/",
-    "reason": "Lifestyle category archive — shows how the theme handles section landing pages and article grids.",
-    "site": "Bona Magazine",
-    "path": "C:\\Users\\Jordan.Shears\\Documents\\My personal Projects\\interface-alchemy\\src\\assets\\projects\\bona-magazine\\category-lifestyle.png",
+    "file": "mobile-package-detail.png",
+    "url": "https://compleatgolfertours.com/packages/nedbank-golf-challenge-2026-hospitality/",
+    "device": "mobile",
+    "reason": "Package detail (mobile).",
+    "site": "Compleat Golfer Tours",
+    "path": "C:\\Users\\Jordan.Shears\\Documents\\My personal Projects\\interface-alchemy\\src\\assets\\projects\\compleat-golfer-tours\\mobile-package-detail.png",
     "ok": true
   },
   {
-    "file": "category-sports.png",
-    "url": "https://staging.bona.co.za/category/sports/",
-    "reason": "Sports category — second archive layout with different editorial mix, proving the template scales across verticals.",
-    "site": "Bona Magazine",
-    "path": "C:\\Users\\Jordan.Shears\\Documents\\My personal Projects\\interface-alchemy\\src\\assets\\projects\\bona-magazine\\category-sports.png",
-    "ok": true
-  },
-  {
-    "file": "article-single.png",
-    "url": "https://staging.bona.co.za/2026-comrades-marathon-everything-you-need-to-know/",
-    "reason": "Single-article template with byline, body typography, and related content — the core reading experience editors publish into daily.",
-    "site": "Bona Magazine",
-    "path": "C:\\Users\\Jordan.Shears\\Documents\\My personal Projects\\interface-alchemy\\src\\assets\\projects\\bona-magazine\\article-single.png",
-    "ok": true
-  },
-  {
-    "file": "article-entertainment.png",
-    "url": "https://staging.bona.co.za/pearl-modiadie-bids-farewell-to-her-law-love-betrayal-character/",
-    "reason": "Entertainment long-read — alternate article layout/content density for gallery variety on the case study page.",
-    "site": "Bona Magazine",
-    "path": "C:\\Users\\Jordan.Shears\\Documents\\My personal Projects\\interface-alchemy\\src\\assets\\projects\\bona-magazine\\article-entertainment.png",
+    "file": "mobile-destinations.png",
+    "url": "https://compleatgolfertours.com/destinations/",
+    "device": "mobile",
+    "reason": "Destinations (mobile).",
+    "site": "Compleat Golfer Tours",
+    "path": "C:\\Users\\Jordan.Shears\\Documents\\My personal Projects\\interface-alchemy\\src\\assets\\projects\\compleat-golfer-tours\\mobile-destinations.png",
     "ok": true
   }
 ]
