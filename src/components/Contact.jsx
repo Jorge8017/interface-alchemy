@@ -101,7 +101,7 @@ export default function Contact({ standalone = false }) {
         </div>
         <div className="contact-links">
           <a
-            href="https://www.linkedin.com/in/jordan-shears-3642b51a9"
+            href="https://www.linkedin.com/in/jordanshears"
             target="_blank"
             rel="noopener noreferrer"
           >
