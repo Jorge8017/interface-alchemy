@@ -3,10 +3,42 @@ import { Link } from 'react-router-dom'
 import { getNextProject } from '../data/projects'
 import Reveal from './Reveal'
 import Lightbox from './Lightbox'
+import SlideDeck from './SlideDeck/SlideDeck'
 
 function approachParagraphs(approach) {
   if (!approach) return []
   return Array.isArray(approach) ? approach : [approach]
+}
+
+function asShots(items = []) {
+  return items.map((item) =>
+    typeof item === 'string' ? { src: item, caption: '' } : item,
+  )
+}
+
+function normalizeGallery(gallery) {
+  if (!gallery) {
+    return { layout: 'showcase', desktop: [], mobile: [] }
+  }
+
+  // Flat arrays become desktop showcase shots so every project shares one style.
+  if (Array.isArray(gallery)) {
+    return {
+      layout: 'showcase',
+      desktop: asShots(gallery),
+      mobile: [],
+    }
+  }
+
+  return {
+    layout: 'showcase',
+    desktop: asShots(gallery.desktop),
+    mobile: asShots(gallery.mobile),
+  }
+}
+
+function flattenGallery(gallery) {
+  return [...gallery.desktop, ...gallery.mobile]
 }
 
 function ProjectImage({
@@ -53,11 +85,41 @@ function ProjectImage({
   )
 }
 
+function ShowcaseShot({ shot, alt, variant, onOpen }) {
+  return (
+    <figure className={`showcase-shot showcase-shot--${variant}`}>
+      <div className="showcase-device">
+        {variant === 'desktop' && (
+          <div className="showcase-chrome" aria-hidden="true">
+            <span />
+            <span />
+            <span />
+          </div>
+        )}
+        <ProjectImage
+          src={shot.src}
+          alt={alt}
+          className={`showcase-image showcase-image--${variant}`}
+          onOpen={onOpen}
+        />
+      </div>
+      {shot.caption && (
+        <figcaption className="showcase-caption">{shot.caption}</figcaption>
+      )}
+    </figure>
+  )
+}
+
 export default function ProjectPage({ project }) {
   const nextProject = getNextProject(project.slug)
   const projectStyle = { '--project-color': project.color }
   const approach = approachParagraphs(project.approach)
-  const gallery = project.gallery || []
+  const gallery = useMemo(
+    () => normalizeGallery(project.gallery),
+    [project.gallery],
+  )
+  const galleryShots = useMemo(() => flattenGallery(gallery), [gallery])
+  const hasGallery = galleryShots.length > 0
   const hasLinks =
     project.figmaLink ||
     project.githubLink ||
@@ -70,14 +132,14 @@ export default function ProjectPage({ project }) {
     if (project.image) {
       items.push({ src: project.image, alt: project.title })
     }
-    gallery.forEach((shot, index) => {
+    galleryShots.forEach((shot, index) => {
       items.push({
-        src: shot,
-        alt: `${project.title} detail ${index + 1}`,
+        src: shot.src,
+        alt: shot.caption || `${project.title} detail ${index + 1}`,
       })
     })
     return items
-  }, [project.image, project.title, gallery])
+  }, [project.image, project.title, galleryShots])
 
   const openAt = (src) => {
     const index = lightboxImages.findIndex((item) => item.src === src)
@@ -193,20 +255,56 @@ export default function ProjectPage({ project }) {
         </div>
       </section>
 
-      {gallery.length > 0 && (
-        <div className="wrap">
-          <Reveal className="gallery">
-            {gallery.map((shot, index) => (
-              <ProjectImage
-                key={shot}
-                src={shot}
-                alt={`${project.title} detail ${index + 1}`}
-                className="project-gallery-image"
-                onOpen={() => openAt(shot)}
-              />
-            ))}
+      {hasGallery && (
+        <section className="gallery-showcase wrap">
+          {gallery.desktop.length > 0 && (
+            <Reveal className="showcase-desktop">
+              {gallery.desktop.map((shot) => (
+                <ShowcaseShot
+                  key={shot.src}
+                  shot={shot}
+                  alt={shot.caption || project.title}
+                  variant="desktop"
+                  onOpen={() => openAt(shot.src)}
+                />
+              ))}
+            </Reveal>
+          )}
+
+          {gallery.mobile.length > 0 && (
+            <Reveal className="showcase-mobile">
+              <div className="showcase-mobile-head">
+                <h3 className="showcase-mobile-title">On mobile</h3>
+                <span className="showcase-mobile-count">
+                  {gallery.mobile.length} screens
+                </span>
+              </div>
+              <div className="showcase-mobile-band">
+                {gallery.mobile.map((shot) => (
+                  <ShowcaseShot
+                    key={shot.src}
+                    shot={shot}
+                    alt={shot.caption || project.title}
+                    variant="mobile"
+                    onOpen={() => openAt(shot.src)}
+                  />
+                ))}
+              </div>
+            </Reveal>
+          )}
+        </section>
+      )}
+
+      {project.pitch?.slides?.length > 0 && (
+        <section className="project-pitch wrap">
+          <Reveal>
+            <h3 className="project-pitch-title">The pitch</h3>
+            <SlideDeck
+              title={project.pitch.title || 'Proposal deck'}
+              slides={project.pitch.slides}
+            />
           </Reveal>
-        </div>
+        </section>
       )}
 
       <div className="wrap">

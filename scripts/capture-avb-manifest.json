@@ -1,0 +1,64 @@
+[
+  {
+    "file": "desktop-trust.png",
+    "device": "desktop",
+    "selector": "#why-us",
+    "reason": "Accreditations / trust strip.",
+    "site": "AVB Transport",
+    "path": "C:\\Users\\Jordan.Shears\\Documents\\My personal Projects\\interface-alchemy\\src\\assets\\projects\\avb-transport\\desktop-trust.png",
+    "ok": true
+  },
+  {
+    "file": "desktop-services.png",
+    "device": "desktop",
+    "selector": "#services",
+    "reason": "Tabbed services panel.",
+    "site": "AVB Transport",
+    "path": "C:\\Users\\Jordan.Shears\\Documents\\My personal Projects\\interface-alchemy\\src\\assets\\projects\\avb-transport\\desktop-services.png",
+    "ok": true
+  },
+  {
+    "file": "desktop-about.png",
+    "device": "desktop",
+    "selector": "#about",
+    "reason": "Family story section.",
+    "site": "AVB Transport",
+    "path": "C:\\Users\\Jordan.Shears\\Documents\\My personal Projects\\interface-alchemy\\src\\assets\\projects\\avb-transport\\desktop-about.png",
+    "ok": true
+  },
+  {
+    "file": "desktop-projects.png",
+    "device": "desktop",
+    "selector": "#projects",
+    "reason": "Project gallery.",
+    "site": "AVB Transport",
+    "path": "C:\\Users\\Jordan.Shears\\Documents\\My personal Projects\\interface-alchemy\\src\\assets\\projects\\avb-transport\\desktop-projects.png",
+    "ok": true
+  },
+  {
+    "file": "desktop-reviews.png",
+    "device": "desktop",
+    "selector": "#reviews",
+    "reason": "Reviews section.",
+    "site": "AVB Transport",
+    "path": "C:\\Users\\Jordan.Shears\\Documents\\My personal Projects\\interface-alchemy\\src\\assets\\projects\\avb-transport\\desktop-reviews.png",
+    "ok": true
+  },
+  {
+    "file": "desktop-quote.png",
+    "device": "desktop",
+    "selector": "#contact",
+    "reason": "Structured quote form.",
+    "site": "AVB Transport",
+    "path": "C:\\Users\\Jordan.Shears\\Documents\\My personal Projects\\interface-alchemy\\src\\assets\\projects\\avb-transport\\desktop-quote.png",
+    "ok": true
+  },
+  {
+    "file": "desktop-credit-modal.png",
+    "device": "desktop",
+    "reason": "Credit application popup.",
+    "site": "AVB Transport",
+    "path": "C:\\Users\\Jordan.Shears\\Documents\\My personal Projects\\interface-alchemy\\src\\assets\\projects\\avb-transport\\desktop-credit-modal.png",
+    "ok": true
+  }
+]

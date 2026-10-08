@@ -8,7 +8,8 @@
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "screenshots": "node scripts/capture-portfolio-screenshots.mjs"
+    "screenshots": "node scripts/capture-portfolio-screenshots.mjs",
+    "screenshots:avb": "node scripts/capture-avb-transport.mjs"
   },
   "dependencies": {
     "react": "^19.2.7",
