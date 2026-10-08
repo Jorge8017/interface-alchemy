@@ -43,7 +43,6 @@ export const projects = [
     year: '2026',
     client: 'Bona Magazine',
     liveLinks: [
-      { label: 'Staging', url: 'https://staging.bona.co.za/' },
       { label: 'Live site', url: 'https://www.bona.co.za/' },
     ],
     tags: ['WordPress', 'Custom Theme', 'PHP'],
