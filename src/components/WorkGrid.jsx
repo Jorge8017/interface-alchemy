@@ -128,10 +128,6 @@ export default function WorkGrid({
                   <div className="work-card-tags">
                     {project.comingSoon ? (
                       <span>Coming soon</span>
-                    ) : project.excerpt && project.tags?.length ? (
-                      project.tags.slice(0, 3).map((tag) => (
-                        <span key={tag}>{tag}</span>
-                      ))
                     ) : (
                       <>
                         <span>{project.role}</span>
@@ -140,11 +136,7 @@ export default function WorkGrid({
                     )}
                   </div>
                   <h3 className="work-card-title">{project.title}</h3>
-                  {(project.excerpt || project.problem) && (
-                    <p className="work-card-excerpt">
-                      {project.excerpt || project.problem}
-                    </p>
-                  )}
+                  {project.problem && <p className="work-card-excerpt">{project.problem}</p>}
                   {project.comingSoon ? (
                     <span className="work-card-cta work-card-cta--soon">Coming soon</span>
                   ) : (
@@ -170,23 +162,13 @@ export default function WorkGrid({
                   coverPosition={project.coverPosition}
                 />
                 <div className="tile-overlay" />
-                  <div className="tile-label">
+                <div className="tile-label">
                   <div className="tile-tags">
-                    {project.comingSoon ? (
-                      <span>Coming soon</span>
-                    ) : project.excerpt && project.tags?.length ? (
-                      project.tags.slice(0, 3).map((tag) => (
-                        <span key={tag}>{tag}</span>
-                      ))
-                    ) : (
-                      <span>{project.role}</span>
-                    )}
+                    <span>{project.comingSoon ? 'Coming soon' : project.role}</span>
                   </div>
                   <div className="t">{project.title}</div>
                   <div className="m">
-                    {project.comingSoon
-                      ? 'Coming soon'
-                      : project.excerpt || `${project.role} — ${project.year}`}
+                    {project.comingSoon ? 'Coming soon' : `${project.role} — ${project.year}`}
                   </div>
                   {!project.comingSoon && <span className="tile-cta">View case →</span>}
                 </div>
