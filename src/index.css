@@ -1774,14 +1774,6 @@ button.showcase-image--mobile {
   object-position: top center;
 }
 
-.showcase-image--mobile.is-focus-top img {
-  object-position: top center;
-}
-
-.showcase-image--mobile.is-focus-center img {
-  object-position: center center;
-}
-
 .showcase-image--mobile.is-fit-contain {
   background: #0b0812;
 }

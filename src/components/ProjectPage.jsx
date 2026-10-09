@@ -40,6 +40,17 @@ function flattenGallery(gallery) {
   return [...gallery.desktop, ...gallery.mobile]
 }
 
+function tileImgStyle(focus, fit) {
+  const style = {}
+  if (focus === 'center') style.objectPosition = 'center'
+  else if (focus === 'top') style.objectPosition = 'top'
+  if (fit === 'contain') {
+    style.objectFit = 'contain'
+    style.objectPosition = style.objectPosition || 'center'
+  }
+  return Object.keys(style).length ? style : undefined
+}
+
 function ProjectImage({
   src,
   alt,
@@ -50,22 +61,35 @@ function ProjectImage({
   focus,
   fit,
 }) {
-  const focusClass =
-    focus === 'center' ? 'is-focus-center' : focus === 'top' ? 'is-focus-top' : ''
   const fitClass = fit === 'contain' ? 'is-fit-contain' : ''
-  const classes = [className, focusClass, fitClass].filter(Boolean).join(' ')
+  const classes = [className, fitClass].filter(Boolean).join(' ')
+  const imgStyle = tileImgStyle(focus, fit)
+  const buttonStyle =
+    fit === 'contain'
+      ? { background: '#0B0812' }
+      : coverPosition
+        ? { '--cover-position': coverPosition }
+        : undefined
 
   if (src && framed) {
     return (
       <button
         type="button"
         className={`cover-frame is-zoomable ${classes}`.trim()}
-        style={coverPosition ? { '--cover-position': coverPosition } : undefined}
+        style={
+          coverPosition ? { '--cover-position': coverPosition } : undefined
+        }
         onClick={onOpen}
         aria-label={`Expand image: ${alt}`}
       >
         <div className="cover-frame-media">
-          <img src={src} alt={alt} loading="lazy" decoding="async" />
+          <img
+            src={src}
+            alt={alt}
+            loading="lazy"
+            decoding="async"
+            style={imgStyle}
+          />
         </div>
       </button>
     )
@@ -76,10 +100,17 @@ function ProjectImage({
       <button
         type="button"
         className={`case-image has-media is-zoomable ${classes}`.trim()}
+        style={buttonStyle}
         onClick={onOpen}
         aria-label={`Expand image: ${alt}`}
       >
-        <img src={src} alt={alt} loading="lazy" decoding="async" />
+        <img
+          src={src}
+          alt={alt}
+          loading="lazy"
+          decoding="async"
+          style={imgStyle}
+        />
       </button>
     )
   }

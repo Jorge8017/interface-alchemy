@@ -63,7 +63,7 @@ import avbPitch14 from '../assets/projects/avb-transport/pitch/slide-14.png'
 import avbPitch15 from '../assets/projects/avb-transport/pitch/slide-15.png'
 import avbPitch16 from '../assets/projects/avb-transport/pitch/slide-16.png'
 
-import repoDesktopLanding from '../assets/projects/repo-recap/desktop-landing.png'
+import repoDesktopLanding from '../assets/projects/repo-recap/desktop-landing-v2.png'
 import repoDesktopYear from '../assets/projects/repo-recap/desktop-year.png'
 import repoDesktopStreak from '../assets/projects/repo-recap/desktop-streak.png'
 import repoDesktopReveal from '../assets/projects/repo-recap/desktop-reveal.png'
@@ -109,7 +109,7 @@ export const projects = [
     problem:
       'My portfolio leaned on WordPress client builds. I wanted a self-initiated React product that shows the full loop (idea, design, data, polish and launch) and that people would actually want to share.',
     approach:
-      'Repo Recap turns any public GitHub profile into a ten-slide story: a year of contributions, streaks, peak hours, top languages and a developer personality, ending in a shareable card. A small serverless API on Vercel fetches GitHub data with a token and caches it at the edge; share images and link previews are rendered on the server so they look identical on every phone. Developers can embed a live recap card in their GitHub README, or go head-to-head in compare mode. I designed every state, including private-only profiles (Ghost Mode), gave it its own logo, and shipped it with unit and end-to-end tests.',
+      'Repo Recap turns any public GitHub profile into a story-style recap: a year of contributions, streaks, peak hours, top languages and a developer personality, ending in a shareable card. A small serverless API on Vercel fetches GitHub data with a token and caches it at the edge; share images and link previews are rendered on the server so they look identical on every phone. Developers can embed a live recap card in their GitHub README, or go head-to-head in compare mode. I designed every state, including private-only profiles (Ghost Mode), gave it its own logo, and shipped it with unit and end-to-end tests.',
     color: '#37473A',
     coverPosition: 'center center',
     image: repoDesktopLanding,
