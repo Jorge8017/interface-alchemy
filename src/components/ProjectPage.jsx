@@ -4,6 +4,7 @@ import { getNextProject } from '../data/projects'
 import Reveal from './Reveal'
 import Lightbox from './Lightbox'
 import SlideDeck from './SlideDeck/SlideDeck'
+import usePageMeta from '../hooks/usePageMeta'
 
 function approachParagraphs(approach) {
   if (!approach) return []
@@ -47,6 +48,8 @@ function ProjectImage({
   className,
   coverPosition,
   framed = false,
+  width,
+  height,
   onOpen,
 }) {
   if (src && framed) {
@@ -59,7 +62,14 @@ function ProjectImage({
         aria-label={`Expand image: ${alt}`}
       >
         <div className="cover-frame-media">
-          <img src={src} alt={alt} loading="lazy" decoding="async" />
+          <img
+            src={src}
+            alt={alt}
+            width={width}
+            height={height}
+            loading="lazy"
+            decoding="async"
+          />
         </div>
       </button>
     )
@@ -73,7 +83,14 @@ function ProjectImage({
         onClick={onOpen}
         aria-label={`Expand image: ${alt}`}
       >
-        <img src={src} alt={alt} loading="lazy" decoding="async" />
+        <img
+          src={src}
+          alt={alt}
+          width={width}
+          height={height}
+          loading="lazy"
+          decoding="async"
+        />
       </button>
     )
   }
@@ -99,6 +116,8 @@ function ShowcaseShot({ shot, alt, variant, onOpen }) {
         <ProjectImage
           src={shot.src}
           alt={alt}
+          width={shot.width}
+          height={shot.height}
           className={`showcase-image showcase-image--${variant}`}
           onOpen={onOpen}
         />
@@ -107,6 +126,117 @@ function ShowcaseShot({ shot, alt, variant, onOpen }) {
         <figcaption className="showcase-caption">{shot.caption}</figcaption>
       )}
     </figure>
+  )
+}
+
+function CaseStudyBody({ caseStudy, openAt }) {
+  return (
+    <div className="case-study-rich">
+      {caseStudy.overview?.length > 0 && (
+        <section className="case-study-block">
+          <h3>Overview</h3>
+          {caseStudy.overview.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+        </section>
+      )}
+
+      {caseStudy.challenge?.length > 0 && (
+        <section className="case-study-block">
+          <h3>The challenge</h3>
+          <ul className="case-study-list">
+            {caseStudy.challenge.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {caseStudy.designDecisions?.length > 0 && (
+        <section className="case-study-block">
+          <h3>Design decisions</h3>
+          <div className="case-decision-list">
+            {caseStudy.designDecisions.map((decision, index) => (
+              <article
+                key={decision.title}
+                className={`case-decision${index % 2 === 1 ? ' reverse' : ''}${decision.image ? '' : ' text-only'}`}
+              >
+                {decision.image && (
+                  <div className="case-decision-media">
+                    <ProjectImage
+                      src={decision.image}
+                      alt={decision.alt || decision.title}
+                      width={decision.width}
+                      height={decision.height}
+                      className="case-decision-image"
+                      onOpen={() => openAt(decision.image)}
+                    />
+                  </div>
+                )}
+                <div className="case-decision-copy">
+                  <h4>{decision.title}</h4>
+                  <p>{decision.body}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {caseStudy.technical?.length > 0 && (
+        <section className="case-study-block">
+          <h3>Technical challenges</h3>
+          <div className="case-tech-list">
+            {caseStudy.technical.map((item) => (
+              <div key={item.title} className="case-tech-item">
+                <h4>{item.title}</h4>
+                <p>{item.body}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {caseStudy.quality?.length > 0 && (
+        <section className="case-study-block">
+          <h3>Quality</h3>
+          <ul className="case-study-list">
+            {caseStudy.quality.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {caseStudy.howIWorked && (
+        <section className="case-study-block">
+          <h3>How I worked</h3>
+          <p>{caseStudy.howIWorked}</p>
+        </section>
+      )}
+
+      {caseStudy.learned?.length > 0 && (
+        <section className="case-study-block">
+          <h3>What I learned</h3>
+          <ul className="case-study-list">
+            {caseStudy.learned.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {caseStudy.next?.length > 0 && (
+        <section className="case-study-block">
+          <h3>What’s next</h3>
+          <ul className="case-study-list">
+            {caseStudy.next.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+    </div>
   )
 }
 
@@ -120,6 +250,7 @@ export default function ProjectPage({ project }) {
   )
   const galleryShots = useMemo(() => flattenGallery(gallery), [gallery])
   const hasGallery = galleryShots.length > 0
+  const hasCaseStudy = Boolean(project.caseStudy)
   const hasLinks =
     project.figmaLink ||
     project.githubLink ||
@@ -127,19 +258,31 @@ export default function ProjectPage({ project }) {
     (project.liveLinks && project.liveLinks.length > 0)
   const [lightboxIndex, setLightboxIndex] = useState(null)
 
+  usePageMeta({
+    title: project.seo?.title,
+    description: project.seo?.description,
+    ogImage: project.seo?.ogImage,
+    ogUrl: project.seo?.ogUrl,
+  })
+
   const lightboxImages = useMemo(() => {
     const items = []
-    if (project.image) {
-      items.push({ src: project.image, alt: project.title })
+    const seen = new Set()
+    const push = (src, alt) => {
+      if (!src || seen.has(src)) return
+      seen.add(src)
+      items.push({ src, alt })
     }
+
+    push(project.image, project.title)
+    project.caseStudy?.designDecisions?.forEach((decision) => {
+      push(decision.image, decision.alt || decision.title)
+    })
     galleryShots.forEach((shot, index) => {
-      items.push({
-        src: shot.src,
-        alt: shot.caption || `${project.title} detail ${index + 1}`,
-      })
+      push(shot.src, shot.caption || `${project.title} detail ${index + 1}`)
     })
     return items
-  }, [project.image, project.title, galleryShots])
+  }, [project, galleryShots])
 
   const openAt = (src) => {
     const index = lightboxImages.findIndex((item) => item.src === src)
@@ -154,9 +297,13 @@ export default function ProjectPage({ project }) {
             ← Back to work
           </Link>
           <h1 className="project-title">{project.title}</h1>
-          <p className="meta">
-            {project.role} · {project.stack} · {project.year}
-          </p>
+          {project.summary ? (
+            <p className="project-summary">{project.summary}</p>
+          ) : (
+            <p className="meta">
+              {project.role} · {project.stack} · {project.year}
+            </p>
+          )}
         </Reveal>
       </section>
 
@@ -166,6 +313,8 @@ export default function ProjectPage({ project }) {
           alt={project.title}
           className="project-cover"
           coverPosition={project.coverPosition}
+          width={1440}
+          height={900}
           framed
           onOpen={() => openAt(project.image)}
         />
@@ -179,18 +328,27 @@ export default function ProjectPage({ project }) {
                 <div className="k">Role</div>
                 <div className="v">{project.role}</div>
               </div>
+              {project.timeline ? (
+                <div className="row">
+                  <div className="k">Timeline</div>
+                  <div className="v">{project.timeline}</div>
+                </div>
+              ) : (
+                <div className="row">
+                  <div className="k">Year</div>
+                  <div className="v">{project.year}</div>
+                </div>
+              )}
               <div className="row">
                 <div className="k">Stack</div>
                 <div className="v">{project.stack}</div>
               </div>
-              <div className="row">
-                <div className="k">Year</div>
-                <div className="v">{project.year}</div>
-              </div>
-              <div className="row">
-                <div className="k">Client</div>
-                <div className="v">{project.client}</div>
-              </div>
+              {!project.timeline && project.client && (
+                <div className="row">
+                  <div className="k">Client</div>
+                  <div className="v">{project.client}</div>
+                </div>
+              )}
               {hasLinks && (
                 <div className="row">
                   <div className="k">Links</div>
@@ -236,24 +394,52 @@ export default function ProjectPage({ project }) {
                 </div>
               )}
             </Reveal>
-            <Reveal>
-              <div className="case-text">
-                <h3>The problem</h3>
-                <p>{project.problem}</p>
-                <h3>The approach</h3>
-                {approach.map((paragraph) => (
-                  <p key={paragraph}>{paragraph}</p>
-                ))}
-              </div>
-              <div className="case-tags">
-                {project.tags.map((tag) => (
-                  <span key={tag}>{tag}</span>
-                ))}
-              </div>
-            </Reveal>
+            {!hasCaseStudy && (
+              <Reveal>
+                <div className="case-text">
+                  <h3>The problem</h3>
+                  <p>{project.problem}</p>
+                  <h3>The approach</h3>
+                  {approach.map((paragraph) => (
+                    <p key={paragraph}>{paragraph}</p>
+                  ))}
+                </div>
+                <div className="case-tags">
+                  {project.tags.map((tag) => (
+                    <span key={tag}>{tag}</span>
+                  ))}
+                </div>
+              </Reveal>
+            )}
+            {hasCaseStudy && (
+              <Reveal>
+                <div className="case-text">
+                  <h3>Overview</h3>
+                  {project.caseStudy.overview?.map((paragraph) => (
+                    <p key={paragraph}>{paragraph}</p>
+                  ))}
+                </div>
+                <div className="case-tags">
+                  {project.tags.map((tag) => (
+                    <span key={tag}>{tag}</span>
+                  ))}
+                </div>
+              </Reveal>
+            )}
           </div>
         </div>
       </section>
+
+      {hasCaseStudy && (
+        <section className="case-study-sections wrap">
+          <Reveal>
+            <CaseStudyBody
+              caseStudy={{ ...project.caseStudy, overview: [] }}
+              openAt={openAt}
+            />
+          </Reveal>
+        </section>
+      )}
 
       {hasGallery && (
         <section className="gallery-showcase wrap">

@@ -63,7 +63,174 @@ import avbPitch14 from '../assets/projects/avb-transport/pitch/slide-14.png'
 import avbPitch15 from '../assets/projects/avb-transport/pitch/slide-15.png'
 import avbPitch16 from '../assets/projects/avb-transport/pitch/slide-16.png'
 
+import repoDesktopLanding from '../assets/projects/repo-recap/desktop-landing.png'
+import repoDesktopStory from '../assets/projects/repo-recap/desktop-story.png'
+import repoDesktopShare from '../assets/projects/repo-recap/desktop-share.png'
+import repoMobileLanding from '../assets/projects/repo-recap/mobile-landing.png'
+import repoMobileStory from '../assets/projects/repo-recap/mobile-story.png'
+import repoMobileShare from '../assets/projects/repo-recap/mobile-share.png'
+import repoGhostMode from '../assets/projects/repo-recap/ghost-mode.png'
+
 export const projects = [
+  // ---------- Product / React ----------
+  {
+    slug: 'repo-recap',
+    title: 'Repo Recap',
+    summary:
+      'Type any public GitHub username and get a nine-slide, story-style recap of their work: languages, streaks, peak hours and a personality card worth sharing.',
+    excerpt:
+      'A story-style recap for any public GitHub profile — designed, built, branded and shipped in two days.',
+    role: 'Solo — product design, development, branding and deployment',
+    timeline: '2 days (October 2026)',
+    stack: 'React, TypeScript, Vite, Tailwind CSS, Framer Motion, TanStack Query, Vitest, Playwright, Vercel',
+    year: '2026',
+    client: 'Personal project',
+    liveLinks: [
+      { label: 'View live site', url: 'https://recap.jordanshears.com' },
+      { label: 'View code', url: 'https://github.com/Jorge8017/repo-recap' },
+    ],
+    tags: ['React', 'TypeScript', 'Product Design'],
+    problem:
+      'A story-style recap for any public GitHub profile — designed, built, branded and shipped in two days.',
+    approach:
+      'Most of my professional work lives in WordPress and client sites, so I wanted a portfolio piece that shows what I can do in React end to end.',
+    color: '#37473A',
+    coverPosition: 'center center',
+    image: repoDesktopStory,
+    tileImage: repoDesktopLanding,
+    seo: {
+      title: 'Repo Recap — Case Study | Jordan Shears',
+      description:
+        'A story-style recap for any public GitHub profile, designed, built and shipped in two days with React and TypeScript.',
+      ogImage: 'https://jordanshears.com/projects/repo-recap/desktop-share.png',
+      ogUrl: 'https://jordanshears.com/work/repo-recap',
+    },
+    caseStudy: {
+      overview: [
+        'Most of my professional work lives in WordPress and client sites, so I wanted a portfolio piece that shows what I can do in React end to end: product thinking, interaction design, a real data layer, and the polish needed to ship something people actually share.',
+        'Repo Recap turns any public GitHub profile into a short, tappable story, in the spirit of year-in-review formats like GitHub Unwrapped, but instant, available any day of the year, and with no login.',
+      ],
+      challenge: [
+        'Work for every kind of profile: accounts with 300 repos and 40,000 stars, and accounts with nothing public at all.',
+        "Stay fast and free: no backend, no login, and GitHub's unauthenticated limit of 60 requests an hour.",
+        'Feel like a product, not a demo: a consistent visual system, a shareable output, and a layout that holds up on any screen.',
+      ],
+      designDecisions: [
+        {
+          title: 'A story, not a dashboard',
+          body: 'Stats land harder one at a time. Each slide has one idea, a kicker (“03 / 09 · PUBLIC CATALOG”), one hero number and a supporting detail. Auto-advance, tap zones and hold-to-pause make it feel native on a phone.',
+          image: repoMobileStory,
+          alt: 'Repo Recap mobile story slide showing busiest day and peak hour',
+          width: 390,
+          height: 844,
+        },
+        {
+          title: 'A theatre on desktop',
+          body: 'Early versions were a phone-shaped column floating in a black void. I redesigned desktop as a theatre: the story card centred on an ambient glow that matches each slide, with prev/next buttons and keyboard hints.',
+          image: repoDesktopStory,
+          alt: 'Repo Recap desktop theatre view on the public catalog stats slide',
+          width: 1440,
+          height: 900,
+        },
+        {
+          title: 'One layout system for every stat',
+          body: 'After slides drifted out of sync, I built a single HeroStatSlide component (lead line, hero value, details row) so every stat slide stays consistent by construction. Values measure themselves and shrink to fit, so “Wednesday” or a 30-character repo name never overflows.',
+        },
+        {
+          title: 'Designing for empty data',
+          body: 'Accounts with no public work originally got a wall of zeros. Now they get a dedicated “Quiet Mode” story and a “Ghost Mode” personality: building in private, mysterious. Empty states should feel designed, not broken.',
+          image: repoGhostMode,
+          alt: 'Repo Recap Ghost Mode personality card for a low-activity GitHub profile',
+          width: 390,
+          height: 844,
+        },
+        {
+          title: 'A card worth sharing',
+          body: 'The final slide exports a 1080×1350 image for LinkedIn, Instagram or X, with the personality, top languages and key stats.',
+          image: repoDesktopShare,
+          alt: 'Repo Recap shareable personality card on desktop',
+          width: 1440,
+          height: 900,
+        },
+        {
+          title: 'Brand',
+          body: 'I explored four logo directions and refined “Code, Played”: a code chevron whose angle echoes a gradient play button, meaning code turned into a story. It ships as the header mark, favicon set and link-preview image.',
+        },
+      ],
+      technical: [
+        {
+          title: 'Rate limits',
+          body: 'Each recap uses only three GitHub API calls, results are cached for an hour, and 404 and rate-limit responses are never retried, so a typo doesn’t burn the hourly quota. Friendly error screens show when the limit resets.',
+        },
+        {
+          title: 'Reliable image export',
+          body: 'Exported cards were missing avatars. I render the export card off-screen at full size, load the avatar as a data URL, wait for fonts and image decoding, and fall back to the user’s initial if the avatar can’t load.',
+        },
+        {
+          title: 'Smooth playback',
+          body: 'Progress bars animate with Framer Motion values rather than React state, so the slide doesn’t re-render every frame.',
+        },
+        {
+          title: 'Text that fits any data',
+          body: 'A useFitText hook measures each hero value against its container and scales it down, so layouts hold for every username, day name and repo name on any screen size.',
+        },
+        {
+          title: 'Link previews',
+          body: 'The Open Graph image keeps all key content in a centred square so WhatsApp’s square crop never cuts off the title.',
+        },
+      ],
+      quality: [
+        'Unit tests for every stat calculation, personality rule and empty-state path, plus Playwright end-to-end tests at desktop and phone sizes',
+        'CI on every push: lint, type-check, tests and build',
+        'Accessible by default: full keyboard control, screen-reader announcements per slide, reduced-motion support and WCAG AA contrast',
+      ],
+      howIWorked:
+        'I used Cursor as a pair programmer. I owned the product direction, UX and visual design, architecture and code review, tested every flow on real devices, and turned each bug I found into a fix plus a test.',
+      learned: [
+        'Designing for the edge cases (empty profiles, long names, failed images) took as long as the happy path, and made the product feel finished.',
+        'A shared layout component beats fixing screens one by one.',
+        'Shipping to a real domain with real link previews surfaces problems no local build will.',
+      ],
+      next: [
+        'A serverless proxy with a GitHub token for higher rate limits and the full yearly contribution calendar',
+        'An embeddable SVG card for GitHub profile READMEs',
+        'A compare mode (/vs/userA/userB) and custom date ranges',
+      ],
+    },
+    gallery: {
+      layout: 'showcase',
+      desktop: [
+        {
+          src: repoDesktopLanding,
+          caption: 'Landing — type any public GitHub username to start a recap.',
+          width: 1440,
+          height: 900,
+        },
+      ],
+      mobile: [
+        {
+          src: repoMobileLanding,
+          caption: 'Mobile landing tuned for a quick username entry.',
+          width: 390,
+          height: 844,
+        },
+        {
+          src: repoMobileStory,
+          caption: 'Busiest-day slide — one idea per frame on a phone.',
+          width: 390,
+          height: 844,
+        },
+        {
+          src: repoMobileShare,
+          caption: 'Shareable personality card ready to save or post.',
+          width: 390,
+          height: 844,
+        },
+      ],
+    },
+    published: true,
+  },
+
   // ---------- WordPress builds ----------
   {
     slug: 'bona-magazine',
