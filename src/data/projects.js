@@ -161,34 +161,42 @@ export const projects = [
         {
           src: repoMobileLanding,
           caption: 'Username input and example profiles, one thumb away.',
+          focus: 'top',
         },
         {
           src: repoMobileYear,
           caption: 'The monthly chart fits a phone without losing detail.',
+          focus: 'center',
         },
         {
           src: repoMobileDay,
           caption: 'Long values shrink to fit instead of overflowing.',
+          focus: 'center',
         },
         {
           src: repoMobileShare,
           caption: 'Save or share the card straight from the phone.',
+          focus: 'top',
         },
         {
           src: repoMobileCompareContributions,
           caption: 'Players stack top and bottom on phones.',
+          focus: 'center',
         },
         {
           src: repoMobileCompareLanguages,
           caption: 'Shared languages keep the same colour for both players.',
+          focus: 'center',
         },
         {
           src: repoMobileCompareScore,
           caption: 'The scoreboard fits without scrolling.',
+          focus: 'center',
         },
         {
           src: repoMobileExport,
           caption: 'The exported 1080×1350 image.',
+          fit: 'contain',
         },
       ],
     },

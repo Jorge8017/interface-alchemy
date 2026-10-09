@@ -47,12 +47,19 @@ function ProjectImage({
   coverPosition,
   framed = false,
   onOpen,
+  focus,
+  fit,
 }) {
+  const focusClass =
+    focus === 'center' ? 'is-focus-center' : focus === 'top' ? 'is-focus-top' : ''
+  const fitClass = fit === 'contain' ? 'is-fit-contain' : ''
+  const classes = [className, focusClass, fitClass].filter(Boolean).join(' ')
+
   if (src && framed) {
     return (
       <button
         type="button"
-        className={`cover-frame is-zoomable ${className || ''}`.trim()}
+        className={`cover-frame is-zoomable ${classes}`.trim()}
         style={coverPosition ? { '--cover-position': coverPosition } : undefined}
         onClick={onOpen}
         aria-label={`Expand image: ${alt}`}
@@ -68,7 +75,7 @@ function ProjectImage({
     return (
       <button
         type="button"
-        className={`case-image has-media is-zoomable ${className || ''}`.trim()}
+        className={`case-image has-media is-zoomable ${classes}`.trim()}
         onClick={onOpen}
         aria-label={`Expand image: ${alt}`}
       >
@@ -78,7 +85,7 @@ function ProjectImage({
   }
 
   return (
-    <div className={`case-image ${className || ''}`.trim()}>
+    <div className={`case-image ${classes}`.trim()}>
       <span>{alt}</span>
     </div>
   )
@@ -99,6 +106,8 @@ function ShowcaseShot({ shot, alt, variant, onOpen }) {
           src={shot.src}
           alt={alt}
           className={`showcase-image showcase-image--${variant}`}
+          focus={shot.focus}
+          fit={shot.fit}
           onOpen={onOpen}
         />
       </div>
