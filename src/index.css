@@ -67,12 +67,13 @@ svg {
   }
 }
 
-/* CUSTOM CURSOR */
+/* CUSTOM CURSOR — white + difference so it stays readable on light and dark */
 .cursor {
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 10000;
+  mix-blend-mode: difference;
 }
 
 .cursor-ring,
@@ -94,23 +95,23 @@ svg {
 .cursor-ring {
   width: 28px;
   height: 28px;
-  border: 1px solid var(--ink);
+  border: 1.5px solid #fff;
   border-radius: 50%;
-  background: rgba(246, 245, 242, 0.15);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .cursor-dot {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: var(--ink);
+  background: #fff;
 }
 
 .cursor.is-hovering .cursor-ring {
   width: 44px;
   height: 44px;
-  background: rgba(55, 71, 58, 0.1);
-  border-color: var(--accent);
+  background: rgba(255, 255, 255, 0.16);
+  border-color: #fff;
 }
 
 .cursor.is-pressing .cursor-ring {
@@ -118,18 +119,10 @@ svg {
   height: 22px;
 }
 
-.cursor.on-dark .cursor-ring {
-  border-color: var(--bg);
-  background: rgba(20, 20, 15, 0.2);
-}
-
-.cursor.on-dark .cursor-dot {
-  background: var(--bg);
-}
-
-.cursor.on-dark.is-hovering .cursor-ring {
-  background: rgba(246, 245, 242, 0.12);
-  border-color: var(--bg);
+@media (pointer: coarse) {
+  .cursor {
+    display: none !important;
+  }
 }
 
 h1, h2, h3 {
