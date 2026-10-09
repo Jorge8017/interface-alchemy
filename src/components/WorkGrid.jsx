@@ -136,7 +136,11 @@ export default function WorkGrid({
                     )}
                   </div>
                   <h3 className="work-card-title">{project.title}</h3>
-                  {project.problem && <p className="work-card-excerpt">{project.problem}</p>}
+                  {(project.excerpt || project.problem) && (
+                    <p className="work-card-excerpt">
+                      {project.excerpt || project.problem}
+                    </p>
+                  )}
                   {project.comingSoon ? (
                     <span className="work-card-cta work-card-cta--soon">Coming soon</span>
                   ) : (

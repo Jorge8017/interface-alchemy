@@ -64,18 +64,22 @@ import avbPitch15 from '../assets/projects/avb-transport/pitch/slide-15.png'
 import avbPitch16 from '../assets/projects/avb-transport/pitch/slide-16.png'
 
 import repoDesktopLanding from '../assets/projects/repo-recap/desktop-landing.png'
-import repoDesktopStoryStats from '../assets/projects/repo-recap/desktop-story-stats.png'
-import repoDesktopLanguages from '../assets/projects/repo-recap/desktop-languages.png'
+import repoDesktopYear from '../assets/projects/repo-recap/desktop-year.png'
+import repoDesktopStreak from '../assets/projects/repo-recap/desktop-streak.png'
 import repoDesktopReveal from '../assets/projects/repo-recap/desktop-reveal.png'
 import repoDesktopShare from '../assets/projects/repo-recap/desktop-share.png'
+import repoDesktopCompareContributions from '../assets/projects/repo-recap/desktop-compare-contributions.png'
+import repoDesktopCompareScore from '../assets/projects/repo-recap/desktop-compare-score.png'
+import repoDesktopEmbedCard from '../assets/projects/repo-recap/desktop-embed-card.png'
 import repoDesktopGhost from '../assets/projects/repo-recap/desktop-ghost.png'
-import repoDesktopError from '../assets/projects/repo-recap/desktop-error.png'
 import repoMobileLanding from '../assets/projects/repo-recap/mobile-landing.png'
-import repoMobileAge from '../assets/projects/repo-recap/mobile-age.png'
+import repoMobileYear from '../assets/projects/repo-recap/mobile-year.png'
 import repoMobileDay from '../assets/projects/repo-recap/mobile-day.png'
-import repoMobileStreak from '../assets/projects/repo-recap/mobile-streak.png'
-import repoMobileReveal from '../assets/projects/repo-recap/mobile-reveal.png'
 import repoMobileShare from '../assets/projects/repo-recap/mobile-share.png'
+import repoMobileCompareContributions from '../assets/projects/repo-recap/mobile-compare-contributions.png'
+import repoMobileCompareLanguages from '../assets/projects/repo-recap/mobile-compare-languages.png'
+import repoMobileCompareScore from '../assets/projects/repo-recap/mobile-compare-score.png'
+import repoMobileExport from '../assets/projects/repo-recap/mobile-export.png'
 
 export const projects = [
   // ---------- Product / React ----------
@@ -83,11 +87,11 @@ export const projects = [
     slug: 'repo-recap',
     title: 'Repo Recap — Design & Build',
     role: 'Product Designer & Developer',
-    stack: 'React · TypeScript · Vite',
+    stack: 'React · TypeScript · Vercel Functions',
     year: '2026',
     client: 'Personal project',
     metaLine:
-      'Product Designer & Developer · React · TypeScript · Personal project · 2026',
+      'Product Designer & Developer · React · TypeScript · Vercel · 2026',
     liveLinks: [
       { label: 'Live site', url: 'https://recap.jordanshears.com' },
       { label: 'Source code', url: 'https://github.com/Jorge8017/repo-recap' },
@@ -97,13 +101,15 @@ export const projects = [
       'TypeScript',
       'Product Design',
       'UX',
-      'Framer Motion',
+      'Serverless',
       'Responsive',
     ],
+    excerpt:
+      'A story-style recap for any GitHub profile, with a live API, README card and compare mode.',
     problem:
       'My portfolio leaned on WordPress client builds. I wanted a self-initiated React product that shows the full loop (idea, design, data, polish and launch) and that people would actually want to share.',
     approach:
-      "I designed and built Repo Recap: type any public GitHub username and get a nine-slide story of languages, streaks, peak hours and a developer personality, ending in a downloadable share card. There's no login or backend, just three GitHub API calls cached for an hour. I designed every state, including empty profiles (Ghost Mode), gave it its own logo and brand, and shipped it to recap.jordanshears.com with unit and end-to-end tests.",
+      'Repo Recap turns any public GitHub profile into a ten-slide story: a year of contributions, streaks, peak hours, top languages and a developer personality, ending in a shareable card. A small serverless API on Vercel fetches GitHub data with a token and caches it at the edge; share images and link previews are rendered on the server so they look identical on every phone. Developers can embed a live recap card in their GitHub README, or go head-to-head in compare mode. I designed every state, including private-only profiles (Ghost Mode), gave it its own logo, and shipped it with unit and end-to-end tests.',
     color: '#37473A',
     coverPosition: 'center center',
     image: repoDesktopLanding,
@@ -112,32 +118,43 @@ export const projects = [
       layout: 'showcase',
       desktop: [
         {
-          src: repoDesktopStoryStats,
+          src: repoDesktopYear,
           caption:
-            'Story slides with one big number each, centred on a glow that matches the slide.',
+            'A year of contributions as a monthly chart, with the best month called out.',
         },
         {
-          src: repoDesktopLanguages,
-          caption: "Top languages as animated bars, from the user's public repos.",
+          src: repoDesktopStreak,
+          caption:
+            'One big number per slide, sized to fit any value on any screen.',
         },
         {
           src: repoDesktopReveal,
-          caption:
-            'The reveal: a developer personality based on when and how they code.',
+          caption: 'A developer personality based on when and how they code.',
         },
         {
           src: repoDesktopShare,
           caption:
-            'The final card exports as a 1080 × 1350 image for LinkedIn, Instagram or X.',
+            'The share card is rendered on the server, so it looks the same on every phone.',
+        },
+        {
+          src: repoDesktopCompareContributions,
+          caption:
+            'Compare mode: two developers head-to-head, each in their own colour.',
+        },
+        {
+          src: repoDesktopCompareScore,
+          caption:
+            'A final scoreboard. Private stats are left out, never counted as a loss.',
+        },
+        {
+          src: repoDesktopEmbedCard,
+          caption:
+            'An embeddable card developers can add to their GitHub README.',
         },
         {
           src: repoDesktopGhost,
-          caption: 'Empty profiles get Ghost Mode instead of a wall of zeros.',
-        },
-        {
-          src: repoDesktopError,
           caption:
-            'Friendly error states, including GitHub rate limits with a reset time.',
+            'Private-only profiles get Ghost Mode instead of a wall of zeros.',
         },
       ],
       mobile: [
@@ -146,24 +163,32 @@ export const projects = [
           caption: 'Username input and example profiles, one thumb away.',
         },
         {
-          src: repoMobileAge,
-          caption: 'Hero stats scale to fit any value on a narrow screen.',
+          src: repoMobileYear,
+          caption: 'The monthly chart fits a phone without losing detail.',
         },
         {
           src: repoMobileDay,
-          caption: 'Tap left or right to move, hold to pause.',
-        },
-        {
-          src: repoMobileStreak,
-          caption: 'Streaks and most active repo from the last 90 days.',
-        },
-        {
-          src: repoMobileReveal,
-          caption: 'The personality reveal, full screen.',
+          caption: 'Long values shrink to fit instead of overflowing.',
         },
         {
           src: repoMobileShare,
           caption: 'Save or share the card straight from the phone.',
+        },
+        {
+          src: repoMobileCompareContributions,
+          caption: 'Players stack top and bottom on phones.',
+        },
+        {
+          src: repoMobileCompareLanguages,
+          caption: 'Shared languages keep the same colour for both players.',
+        },
+        {
+          src: repoMobileCompareScore,
+          caption: 'The scoreboard fits without scrolling.',
+        },
+        {
+          src: repoMobileExport,
+          caption: 'The exported 1080×1350 image.',
         },
       ],
     },
